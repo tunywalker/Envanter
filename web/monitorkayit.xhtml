@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Envanter Kayıt Sistemi</title>
+     <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputScript library="js" name="jquery-3.4.0.js"/>
+        <h:outputScript library="js" name="bootstrap.js"/>
+    </h:head>
+    <h:body>
+        
+        <div class="container-fluid">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+                <a class="navbar-brand" href="#">ENVANTER KAYIT SİSTEMİ</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">  
+                            <h:link class="nav-link" value="Birim" outcome="birim" />       
+                        </li>
+                        <li class="nav-item">
+                            <h:link class="nav-link" value="Bölüm" outcome="bolum" />       
+                        </li>
+                         <li class="nav-item">
+                            <h:link class="nav-link" value="Monitör Kayıt" outcome="monitorkayit" />       
+                        </li>
+
+                    </ul>
+
+                </div>
+            </nav>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-6">
+                <h:form id="birim-table">
+                    <h:dataTable styleClass="table table-striped table-hover" value="#{monitorKayitController.mklist}" var="mklist">
+                        <h:column>
+                            <f:facet name="header">ID</f:facet>
+                                #{mklist.id}                    
+                        </h:column>                    
+                        <h:column>
+                            <f:facet name="header">Kod</f:facet>
+                            <h:commandLink action="index" value="#{mklist.kod}">
+                                <f:ajax execute="@this" render="birim-form"/>
+                            </h:commandLink>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Ekleyen Kullanıcı İD</f:facet>
+                                #{mklist.ekleyenkullanici_id}                    
+                        </h:column>
+<h:column>
+                            <f:facet name="header">Ad Soyad</f:facet>
+                                #{mklist.adsoyad}                    
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Birim İD</f:facet>
+                                #{mklist.birim_id}                    
+                        </h:column>
+                         <h:column>
+                            <f:facet name="header">Bolum İD</f:facet>
+                                #{mklist.bolum_id}                    
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Marka İD</f:facet>
+                                #{mklist.marka_id}                    
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Model İD</f:facet>
+                                #{mklist.model_id}                    
+                        </h:column>
+                         <h:column>
+                            <f:facet name="header">Seri No</f:facet>
+                                #{mklist.serino}                    
+                        </h:column>
+                         <h:column>
+                            <f:facet name="header">Açıklama</f:facet>
+                                #{mklist.aciklama}                    
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Kayıt Tarihi</f:facet>
+                                #{mklist.kayittarihi}                    
+                        </h:column>
+                        
+                    </h:dataTable>
+                </h:form>
+            </div>
+
+
+            <div class="col-7">
+                <h:form id="birim-form">
+                    <div class="form-group">
+                        <h:inputHidden value="#{birimController.birim.id}"/>
+                        <label for="formGroupExampleInput">Birim Adı: </label>
+                        <h:inputText class="form-control mb-2 mr-sm-2" value="#{birimController.birim.birim_adi}" required="true"/>
+                        <label for="formGroupExampleInput">Birim Kodu: </label>
+                        <h:inputText class="form-control mb-2 mr-sm-2" value="#{birimController.birim.birim_kodu}" required="true"/>
+                    </div>
+                    <div class="form-group">                        
+                        <h:commandButton rendered="#{birimController.birim.id!=0}" class="btn btn-info" value="Güncelle" action="#{birimController.guncelle()}">
+                            <f:ajax execute="birim-form" render="birim-form birim-table"/>
+                        </h:commandButton>
+
+                        <h:commandButton rendered="#{birimController.birim.id==0}" class="btn btn-danger" value="Kaydet" action="#{birimController.create}">
+                            <f:ajax execute="birim-form" render="birim-form birim-table"/>
+                        </h:commandButton>
+
+                        <h:commandButton  rendered="#{birimController.birim.id!=0}" class="btn btn-secondary" value="Temizle" action="#{birimController.temizleForm()}">
+                            <f:ajax execute="@this" render="birim-form"/>
+                        </h:commandButton>
+                    </div>
+                </h:form>
+            </div> 
+
+
+            <div class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:panelGroup layout="block" class="modal-content" id="sil-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Sil Onayı</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Silmek istediğinizden emin misiniz?<br/><br/>
+                                <b>Birim Adı:</b> #{birimController.birim.birim_adi}<br/>
+                                <b>Birim Kodu:</b> #{birimController.birim.birim_kodu}<br/><br/>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <h:form>
+                                <h:commandButton onclick="$('.modal').modal('hide');" styleClass="btn btn-danger" action="#{birimController.sil}" value="Onayla">
+                                    <f:ajax execute="@this" render="birim-form birim-table"/>
+                                </h:commandButton>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                            </h:form> 
+                        </div>
+                    </h:panelGroup>
+                </div>
+            </div>
+
+        </div>
+    </h:body>
+</html>
+
