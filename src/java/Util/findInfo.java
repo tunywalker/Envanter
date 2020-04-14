@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * @author Bambi
  */
 public class findInfo {
-    
+     
 //İP adresi bulma
 public static String getRemoteAddress() {
    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
